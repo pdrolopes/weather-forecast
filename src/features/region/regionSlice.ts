@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { fetchRegions, Region } from './regionAPI';
+import { fetchRegions, Region } from  '../../service/openData';
 
 type FailedState = {
   kind: 'Failed';

@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import regionReducer from '../features/region/regionSlice';
+import forecastReducer from '../features/forecast/forecastSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     region: regionReducer,
+    forecast: forecastReducer,
   },
 });
 
@@ -17,3 +19,8 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+// TODO checkthis
+// export type ThunkAPI = {
+//   dispatch: AppDispatch;
+//   state: RootState;
+// };

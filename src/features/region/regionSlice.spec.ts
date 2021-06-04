@@ -1,9 +1,6 @@
 import counterReducer, {
-  CounterState,
-  increment,
-  decrement,
-  incrementByAmount,
-} from './counterSlice';
+  loadRegions
+} from './regionSlice';
 
 describe('counter reducer', () => {
   const initialState: CounterState = {
