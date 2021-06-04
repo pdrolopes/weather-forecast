@@ -29,7 +29,7 @@ const initialState: ForecastState = {
   innerState: { kind: 'Idle'},
 };
 
-export const loadForecast = createAsyncThunk<Array<DailyForecast>, number, { state: RootState}>(
+export const loadForecast = createAsyncThunk<Array<DailyForecast>, number, { state: RootState }>(
   'forecast/load',
   async (regionId: number) => fetchForecast(regionId),
   {
@@ -70,6 +70,13 @@ export const forecastSlice = createSlice({
       })
       .addCase(loadForecast.rejected, (state, action) => {
         const regionIdForecast = action.meta.arg;
+
+        // Rejected forecast might be for an old region
+        const shouldIgnoreAction = state.innerState.kind !== 'Idle' && state.innerState.regionId !== regionIdForecast;
+
+        if (shouldIgnoreAction) {
+          return;
+        }
         state.innerState = {
           kind: 'Failed',
           error: action.error.message || '',
