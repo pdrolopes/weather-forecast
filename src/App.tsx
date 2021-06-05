@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
-// import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import  RegionList  from './components/RegionList';
 import { useAppSelector, useAppDispatch } from './app/hooks';
-import { loadRegions, selectRegions } from './features/region/regionSlice';
+import { loadRegions, selectIsLoading, selectRegions } from './features/region/regionSlice';
 import { loadForecast, selectForecast } from './features/forecast/forecastSlice';
 import { useDispatch } from 'react-redux';
 import ForecastList from './components/ForecastList';
@@ -12,6 +10,7 @@ import Layout from './components/Layout';
 function App() {
   const dispatch = useDispatch();
   const regions = useAppSelector(selectRegions);
+  const isLoadingRegions = useAppSelector(selectIsLoading);
   const activeForecast = useAppSelector(selectForecast);
 
   const [id, setId] = useState<number | undefined>(undefined);
@@ -26,11 +25,10 @@ function App() {
     dispatch(loadForecast(id))
   }, [id]);
 
-  // console.debug(id, activeForecast[0]?.latitude);
 
 
   return (
-    <Layout sideMenu={(<RegionList regions={regions} onRegionClick={setId} />)}>
+    <Layout sideMenu={(<RegionList regions={regions} isLoading={isLoadingRegions} onRegionClick={setId} />)}>
       <ForecastList isLoading={false} forecasts={activeForecast} regionName={activeRegion?.name || ''}/>
     </Layout>
   );

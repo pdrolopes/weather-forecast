@@ -1,8 +1,9 @@
 import { NumberLiteralType } from "typescript"
 
 export type RegionType = {
-    name: string;
     id: number;
+    name: string;
+    areaId: string;
 }
 export type ForecastType = {
     minTemperature: number;

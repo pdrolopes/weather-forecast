@@ -20,7 +20,7 @@ function Layout(props: Props) {
 }
 
 const Container = styled.div`
-height: 100vh;
+height: calc(100vh - 16px);
 display: grid;
   background-color: #ecedf4;
   padding: 8px;
@@ -28,7 +28,7 @@ display: grid;
   grid-template-rows: 3rem auto;
   grid-template-areas: "header header" 
                       "sidebar main";
-  row-gap: 16px;
+  gap: 16px;
 `;
 
 const Header = styled.header`

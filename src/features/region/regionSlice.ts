@@ -54,6 +54,7 @@ export const regionSlice = createSlice({
         const regions = action.payload.map(region => ({
           id: region.globalIdLocal,
           name: region.local,
+          areaId: region.idAreaAviso
         }))
 
         state.innerState = {
@@ -80,5 +81,6 @@ export const selectRegions = (state: RootState): Array<RegionType> => {
 
   return [];
 }
+export const selectIsLoading = (state: RootState): boolean => state.region.innerState.kind === 'Loading';
 
 export default regionSlice.reducer;
