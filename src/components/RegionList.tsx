@@ -1,6 +1,7 @@
 import React,  { useState, useMemo, ChangeEventHandler, HtmlHTMLAttributes } from 'react';
 import Region from './Region';
 import Card from './Card';
+import Loading from './Loading';
 import { RegionType } from '../types';
 import styled from 'styled-components';
 
@@ -15,7 +16,7 @@ function RegionList (props: Props) {
 
     const [filter, setFilter] = useState("");
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) => setFilter(event.target.value);
-    const filteredList = useMemo(() => regions.filter(region => region.name.toLowerCase().includes(filter.toLowerCase())), [filter, regions]);
+    const filteredList = useMemo(() => regions.filter(region => region.name.toLowerCase().includes(filter.toLowerCase()) || region.areaId.toLowerCase().includes(filter.toLowerCase())), [filter, regions]);
     const isEmpty = filteredList.length === 0;
     const showEmptyMessage = isEmpty && !isLoading;
 
@@ -27,8 +28,8 @@ function RegionList (props: Props) {
             <Input onChange={handleInputChange} value={filter} placeholder="Filter region"/>
             <Divider/>
 
-            {isLoading  && (<div>loading</div>) }
-            {!isLoading &&
+            <ListWrapper>{!isLoading &&
+
                 filteredList.map(region => {
                 const { id, name, areaId } = region;
                 return (<Region 
@@ -39,9 +40,10 @@ function RegionList (props: Props) {
                     onClick={() => onRegionClick(id)}
                     />)
                 })
-            }
+            }</ListWrapper>
 
-            {showEmptyMessage && (<div>No region found.</div>)}
+            {isLoading  && (<CenterWrapper><Loading/></CenterWrapper>) }
+            {showEmptyMessage && (<CenterWrapper>No region found.</CenterWrapper>)}
        </Container>
        </Card>
     );
@@ -49,6 +51,23 @@ function RegionList (props: Props) {
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+    height: 100%;
+`;
+
+const CenterWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    color: #0a1937;
+`;
+
+const ListWrapper = styled.div`
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    width: 100%;
 `;
 
 const Title = styled.h2`
@@ -70,7 +89,7 @@ const Input = styled.input`
   font-size: 16px;
   background-color: transparent;
   border: none;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid #d3d3d3;
   &:focus {
     outline: none;
   }

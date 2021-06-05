@@ -15,8 +15,8 @@ function App() {
 
   const [id, setId] = useState<number | undefined>(undefined);
   const activeRegion = useMemo(() => regions.find(r => r.id === id), [regions, id]);
-  useEffect(() => { dispatch(loadRegions()) }, []);
 
+  useEffect(() => { dispatch(loadRegions()) }, []);
   useEffect(() => {
     if (id === undefined) {
         return;

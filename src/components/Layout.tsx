@@ -14,47 +14,51 @@ function Layout(props: Props) {
 
     return (<Container>
             <Header><Title>Weather Forecast</Title></Header>
-            <Main>{children}</Main>
             <SideMenu>{sideMenu}</SideMenu>
+            <Main>{children}</Main>
         </Container>)
 }
 
 const Container = styled.div`
-height: calc(100vh - 16px);
-display: grid;
+  height: calc(100vh - 16px);
+  display: grid;
   background-color: #ecedf4;
-  padding: 8px;
-  grid-template-columns: auto 9fr ;
-  grid-template-rows: 3rem auto;
+  grid-template-columns: auto 9fr;
+  grid-template-rows: 3rem minmax(0,1fr);
   grid-template-areas: "header header" 
                       "sidebar main";
+ 
+  padding-bottom: 16px;
   gap: 16px;
 `;
 
 const Header = styled.header`
   grid-area: header;
   background-color: #ffffff;
-  height: calc(3rem - 16px);
+  height: (3rem - 16px);
   padding: 8px;
-  margin: -8px -8px 0 -8px;
   box-shadow: 0 2px 8px -2px gray;
   display: flex;
   align-items: center;
 `;
+
 const Title = styled.h1`
     font-weight: 400;
     font-size: 32px;
     color: #0a1937;
     margin: 0;
-`
+`;
 
 const Main = styled.div`
   grid-area: main;
+  margin-right: 16px;
+  display: flex;
 `;
 
 const SideMenu = styled.div`
   grid-area: sidebar;
+  margin-left: 16px;
+  display: flex;
 `;
-
 
 export default Layout;
