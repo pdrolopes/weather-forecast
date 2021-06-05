@@ -1,7 +1,7 @@
 import React from 'react';
-import { Region } from '../types';
+import { RegionType } from '../types';
 
-type Props = Region & {
+type Props = RegionType & {
     onClick(): void;
 };
 

@@ -1,10 +1,16 @@
 import React from 'react';
+import { ForecastType } from '../types';
 
-type Props = {};
+type Props = ForecastType;
 
-function Forecast(props: Props) {
+function ForecastList (props: Props) {
+    const { minTemperature, maxTemperature, chanceOfPrecipitation } = props;
 
-    return (<div></div>);
+    return (<div>
+        <div>{minTemperature}</div>
+        <div>{maxTemperature}</div>
+        <div>{chanceOfPrecipitation}</div>
+    </div>);
 }
 
-export default Forecast;
+export default ForecastList;

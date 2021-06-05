@@ -1,9 +1,11 @@
+import { NumberLiteralType } from "typescript"
 
-export type Region = {
+export type RegionType = {
     name: string;
     id: number;
 }
-export type Forecast = {
-    foo: string;
-    id: number;
+export type ForecastType = {
+    minTemperature: number;
+    maxTemperature: number;
+    chanceOfPrecipitation: number;
 }

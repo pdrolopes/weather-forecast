@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { fetchRegions, Region } from  '../../service/openData';
+import { fetchRegions } from  '../../service/openData';
+import { RegionType } from '../../types';
 
 type FailedState = {
   kind: 'Failed';
@@ -8,7 +9,7 @@ type FailedState = {
 }
 type LoadedState = {
   kind: 'Loaded';
-  regions: Array<Region>;
+  regions: Array<RegionType>;
 }
 type LoadingState = {
   kind: 'Loading';
@@ -50,9 +51,14 @@ export const regionSlice = createSlice({
         state.innerState = {kind: 'Loading'};
       })
       .addCase(loadRegions.fulfilled, (state, action) => {
+        const regions = action.payload.map(region => ({
+          id: region.globalIdLocal,
+          name: region.local,
+        }))
+
         state.innerState = {
           kind: 'Loaded',
-          regions: action.payload
+          regions
         }
       })
       .addCase(loadRegions.rejected, (state, action) => {
@@ -65,7 +71,8 @@ export const regionSlice = createSlice({
 });
 
 
-export const selectRegions = (state: RootState): Array<Region> => {
+
+export const selectRegions = (state: RootState): Array<RegionType> => {
   const { innerState } = state.region;
   if (innerState.kind === 'Loaded') {
     return innerState.regions ;

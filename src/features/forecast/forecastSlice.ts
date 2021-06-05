@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { fetchForecast, DailyForecast } from  '../../service/openData';
+import { fetchForecast, DailyForecast as OpenDataForcast } from  '../../service/openData';
+import { ForecastType } from '../../types';
 
 type IdleState = {
   kind: 'Idle';
@@ -12,7 +13,7 @@ type LoadingState = {
 type LoadedState = {
   kind: 'Loaded';
   regionId: number;
-  forecast: Array<DailyForecast>;
+  forecasts: Array<ForecastType>;
 }
 type FailedState = {
   kind: 'Failed';
@@ -29,7 +30,7 @@ const initialState: ForecastState = {
   innerState: { kind: 'Idle'},
 };
 
-export const loadForecast = createAsyncThunk<Array<DailyForecast>, number, { state: RootState }>(
+export const loadForecast = createAsyncThunk<Array<OpenDataForcast>, number, { state: RootState }>(
   'forecast/load',
   async (regionId: number) => fetchForecast(regionId),
   {
@@ -61,10 +62,15 @@ export const forecastSlice = createSlice({
         if (shouldIgnoreAction) {
           return;
         }
+        const forecasts = action.payload.map(f => ({
+          minTemperature: Number(f.tMin),
+          maxTemperature: Number(f.tMax),
+          chanceOfPrecipitation: Number(f.precipitaProb)
+        }))
 
         state.innerState = {
           kind: 'Loaded',
-          forecast: action.payload ,
+          forecasts: forecasts,
           regionId: regionIdForecast,
         }
       })
@@ -77,6 +83,7 @@ export const forecastSlice = createSlice({
         if (shouldIgnoreAction) {
           return;
         }
+
         state.innerState = {
           kind: 'Failed',
           error: action.error.message || '',
@@ -87,10 +94,10 @@ export const forecastSlice = createSlice({
 });
 
 
-export const selectForecast = (state: RootState): Array<DailyForecast> => {
+export const selectForecast = (state: RootState): Array<ForecastType> => {
   const { innerState } = state.forecast;
   if (innerState.kind === 'Loaded') {
-    return innerState.forecast;
+    return innerState.forecasts;
   }
 
   return [];
