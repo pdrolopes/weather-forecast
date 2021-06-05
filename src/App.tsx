@@ -7,6 +7,7 @@ import { loadRegions, selectRegions } from './features/region/regionSlice';
 import { loadForecast, selectForecast } from './features/forecast/forecastSlice';
 import { useDispatch } from 'react-redux';
 import ForecastList from './components/ForecastList';
+import Layout from './components/Layout';
 
 function App() {
   const dispatch = useDispatch();
@@ -29,10 +30,10 @@ function App() {
 
 
   return (
-    <div>
+    <Layout>
       <RegionList regions={regions} onRegionClick={setId} />
       <ForecastList isLoading={false} forecasts={activeForecast} regionName={activeRegion?.name || ''}/>
-    </div>
+    </Layout>
   );
 }
 
