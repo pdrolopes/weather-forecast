@@ -30,8 +30,7 @@ function App() {
 
 
   return (
-    <Layout>
-      <RegionList regions={regions} onRegionClick={setId} />
+    <Layout sideMenu={(<RegionList regions={regions} onRegionClick={setId} />)}>
       <ForecastList isLoading={false} forecasts={activeForecast} regionName={activeRegion?.name || ''}/>
     </Layout>
   );
