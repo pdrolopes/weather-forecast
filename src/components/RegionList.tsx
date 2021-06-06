@@ -2,6 +2,7 @@ import React, { useState, useMemo, ChangeEventHandler, useEffect, ReactElement }
 import RegionItem from './RegionItem';
 import Card from './Card';
 import Button from './Button';
+import Transition from './Transition';
 import Loading from './Loading';
 import { RegionType } from '../types';
 import styled from 'styled-components';
@@ -38,46 +39,52 @@ function RegionList(props: Props): ReactElement {
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) =>
     setFilter(event.target.value);
   const isEmpty = filteredList.length === 0;
-  const showEmptyMessage = isEmpty && !isLoading && !isError;
+  const showEmptyMessage = isEmpty && !isLoading && !isError && !!filter;
   const handleRetryClick = () => dispatch(loadRegions());
+  const transitionState = `${isLoading}-${isEmpty}-${isError}-${showEmptyMessage}`;
 
   return (
     <Container>
       <Title>Regions</Title>
       <Input onChange={handleInputChange} value={filter} placeholder="Filter region" />
+
       <Divider />
 
-      <ListWrapper>
-        {!isLoading &&
-          filteredList.map((region) => {
-            const { id, name, areaId } = region;
-            return (
-              <RegionItem
-                key={id}
-                id={id}
-                name={name}
-                areaId={areaId}
-                onClick={() => onRegionSelect(region)}
-              />
-            );
-          })}
-      </ListWrapper>
+      <Transition state={transitionState}>
+        <>
+          <ListWrapper>
+            {filteredList.map((region) => {
+              const { id, name, areaId } = region;
+              return (
+                <RegionItem
+                  key={id}
+                  id={id}
+                  name={name}
+                  areaId={areaId}
+                  onClick={() => onRegionSelect(region)}
+                />
+              );
+            })}
+          </ListWrapper>
 
-      {isLoading && (
-        <CenterWrapper>
-          <Loading />
-        </CenterWrapper>
-      )}
-      {showEmptyMessage && <CenterWrapper>No region found</CenterWrapper>}
-      {isError && (
-        <CenterWrapper>
-          There was a problem
-          <RetryButton onClick={handleRetryClick}>Retry</RetryButton>
-        </CenterWrapper>
-      )}
+          {isLoading && (
+            <CenterWrapper>
+              <Loading />
+            </CenterWrapper>
+          )}
+          {showEmptyMessage && <CenterWrapper>No region found</CenterWrapper>}
+          {isError && (
+            <CenterWrapper>
+              There was a problem
+              <RetryButton onClick={handleRetryClick}>Retry</RetryButton>
+            </CenterWrapper>
+          )}
+        </>
+      </Transition>
     </Container>
   );
 }
+
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
