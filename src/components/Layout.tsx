@@ -23,7 +23,7 @@ const Container = styled.div`
   height: calc(100vh - 16px);
   display: grid;
   background-color: #ecedf4;
-  grid-template-columns: auto 9fr;
+  grid-template-columns: auto minmax(0,9fr);
   grid-template-rows: 3rem minmax(0,1fr);
   grid-template-areas: "header header" 
                       "sidebar main";

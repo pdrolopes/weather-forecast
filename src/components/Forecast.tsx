@@ -7,9 +7,9 @@ function ForecastList (props: Props): ReactElement {
     const { minTemperature, maxTemperature, chanceOfPrecipitation } = props;
 
     return (<div>
-        <div>{minTemperature}</div>
-        <div>{maxTemperature}</div>
-        <div>{chanceOfPrecipitation}</div>
+        <div>Minimum temperature: {minTemperature}</div>
+        <div>Maximum temperature: {maxTemperature}</div>
+        <div>% Precipitation: {chanceOfPrecipitation}</div>
     </div>);
 }
 

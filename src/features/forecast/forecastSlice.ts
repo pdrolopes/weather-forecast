@@ -102,5 +102,6 @@ export const selectForecast = (state: RootState): Array<ForecastType> => {
 
   return [];
 }
+export const selectIsLoading = (state: RootState): boolean => state.forecast.innerState.kind === 'Loading';
 
 export default forecastSlice.reducer;

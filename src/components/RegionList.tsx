@@ -20,10 +20,8 @@ function RegionList (props: Props) {
     const isEmpty = filteredList.length === 0;
     const showEmptyMessage = isEmpty && !isLoading;
 
-    console.debug({isLoading});
     return (
-        <Card>
-            <Container>
+        <Container>
             <Title>Regions</Title>
             <Input onChange={handleInputChange} value={filter} placeholder="Filter region"/>
             <Divider/>
@@ -43,15 +41,16 @@ function RegionList (props: Props) {
             }</ListWrapper>
 
             {isLoading  && (<CenterWrapper><Loading/></CenterWrapper>) }
-            {showEmptyMessage && (<CenterWrapper>No region found.</CenterWrapper>)}
+            {showEmptyMessage && (<CenterWrapper>No region found</CenterWrapper>)}
        </Container>
-       </Card>
+       
     );
 }
-const Container = styled.div`
+const Container = styled(Card)`
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-width: 330px;
 `;
 
 const CenterWrapper = styled.div`
@@ -65,14 +64,28 @@ const CenterWrapper = styled.div`
 
 const ListWrapper = styled.div`
     display: flex;
-    overflow-y: auto;
+    overflow-y: scroll;
     flex-direction: column;
     width: 100%;
+
+    & > * {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    // Hide scroll bar
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    &::-webkit-scrollbar { /* WebKit */
+        width: 0;
+        height: 0;
+    }
 `;
 
 const Title = styled.h2`
     margin-top: 0;
     font-size: 20px;
+    flex-shrink: 0;
+    color: #0a1937;
 `
 
 const Divider = styled.div`
@@ -81,6 +94,7 @@ const Divider = styled.div`
     margin-right: -8px;
     background-color: #d3d3d3;
     width: calc(100% + 16px);
+    flex-shrink: 0;
 `
 
 const Input = styled.input`
@@ -96,6 +110,7 @@ const Input = styled.input`
   margin-bottom: 8px;
   padding-left: 8px;
   padding-right: 8px;
+  flex-shrink: 0;
 `
 
 export default RegionList;

@@ -6,7 +6,7 @@ const spin = keyframes`
 `;
 
 const Loading = styled.div`
-    border: 10px solid #d3d3d3;
+    border: 10px solid #e0e0e0;
     border-top: 10px solid #97d5fe;
     border-radius: 50%;
     width: 48px;
