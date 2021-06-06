@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
   sideMenu: ReactNode;
 };
 
-function Layout(props: Props) {
+function Layout(props: Props): ReactElement {
   const { children, sideMenu } = props;
 
   return (
