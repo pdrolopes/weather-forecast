@@ -3,7 +3,7 @@ import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
 type Props = { className?: string; state: string; children: ReactNode };
-const transitionName = `fade`;
+const transitionName = 'fade';
 const transitionTime = 100;
 function CustomTransition(props: Props): ReactElement {
   const { state, children, className } = props;
