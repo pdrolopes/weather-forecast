@@ -1,11 +1,12 @@
 import React, { useEffect, ReactElement } from 'react';
-import { RegionType } from '../types';
-import ForecastItem from './Forecast';
-import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { loadForecast, selectForecast, selectIsLoading } from '../store/forecast';
+import Button from './Button';
 import Card from './Card';
+import ForecastItem from './ForecastItem';
 import Loading from './Loading';
 import styled from 'styled-components';
+import { RegionType } from '../types';
+import { loadForecast, selectForecast, selectIsError, selectIsLoading } from '../store/forecast';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
 
 type Props = {
   region?: RegionType;
@@ -16,34 +17,40 @@ function Forecast(props: Props): ReactElement {
 
   const dispatch = useAppDispatch();
   const forecasts = useAppSelector(selectForecast);
-  const isLoadingForecasts = useAppSelector(selectIsLoading);
+  const isLoading = useAppSelector(selectIsLoading);
+  const isError = useAppSelector(selectIsError);
 
   useEffect(() => {
     region && dispatch(loadForecast(region.id));
   }, [region, dispatch]);
 
   const hasSelectedRegion = region !== undefined;
-  const showContent = hasSelectedRegion && !isLoadingForecasts;
+  const showContent = hasSelectedRegion && !isLoading && !isError;
   const regionLabel = region ? `${region.name} (${region.areaId})` : '';
+  const handleRetryClick = () => region && dispatch(loadForecast(region.id));
 
   return (
     <Container>
       <Title>Forecast</Title>
+      {hasSelectedRegion && <Subtitle>Region: {regionLabel}</Subtitle>}
 
-      {isLoadingForecasts && (
+      {isLoading && (
         <LoadingWrapper>
           <Loading />
         </LoadingWrapper>
       )}
       {showContent && (
-        <>
-          <Subtitle>Region: {regionLabel}</Subtitle>
-          <ListWrapper>
-            {forecasts.map((forecast, index) => (
-              <ForecastItem key={index} {...forecast} />
-            ))}
-          </ListWrapper>
-        </>
+        <ListWrapper>
+          {forecasts.map((forecast, index) => (
+            <ForecastItem key={index} {...forecast} />
+          ))}
+        </ListWrapper>
+      )}
+      {isError && (
+        <LoadingWrapper>
+          There was a problem
+          <RetryButton onClick={handleRetryClick}>Retry</RetryButton>
+        </LoadingWrapper>
       )}
     </Container>
   );
@@ -63,6 +70,11 @@ const LoadingWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+`;
+
+const RetryButton = styled(Button)`
+  min-width: 150px;
+  margin-top: 16px;
 `;
 
 const Title = styled.h2`

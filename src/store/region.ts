@@ -70,4 +70,7 @@ export const selectRegions = (state: RootState): Array<RegionType> => {
 export const selectIsLoading = (state: RootState): boolean =>
   state.region.innerState.kind === 'Loading';
 
+export const selectIsError = (state: RootState): boolean =>
+  state.region.innerState.kind === 'Failed';
+
 export default regionSlice.reducer;

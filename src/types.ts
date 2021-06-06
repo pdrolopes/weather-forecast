@@ -7,5 +7,5 @@ export type ForecastType = {
   minTemperature: number;
   maxTemperature: number;
   chanceOfPrecipitation: number;
-  date: Date;
+  date: string;
 };

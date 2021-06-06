@@ -1,22 +1,24 @@
-import React, { useState, useMemo, ChangeEventHandler, useEffect } from 'react';
-import Region from './Region';
+import React, { useState, useMemo, ChangeEventHandler, useEffect, ReactElement } from 'react';
+import RegionItem from './RegionItem';
 import Card from './Card';
+import Button from './Button';
 import Loading from './Loading';
 import { RegionType } from '../types';
 import styled from 'styled-components';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { loadRegions, selectIsLoading, selectRegions } from '../store/region';
+import { loadRegions, selectIsError, selectIsLoading, selectRegions } from '../store/region';
 
 type Props = {
   onRegionSelect(id: RegionType): void;
 };
 
-function RegionList(props: Props) {
+function RegionList(props: Props): ReactElement {
   const { onRegionSelect } = props;
 
   const dispatch = useAppDispatch();
   const regions = useAppSelector(selectRegions);
   const isLoading = useAppSelector(selectIsLoading);
+  const isError = useAppSelector(selectIsError);
 
   const [filter, setFilter] = useState('');
   const filteredList = useMemo(
@@ -29,14 +31,15 @@ function RegionList(props: Props) {
     [filter, regions]
   );
 
+  useEffect(() => {
+    dispatch(loadRegions());
+  }, [dispatch]);
+
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) =>
     setFilter(event.target.value);
   const isEmpty = filteredList.length === 0;
-  const showEmptyMessage = isEmpty && !isLoading;
-
-  useEffect(() => {
-    dispatch(loadRegions());
-  }, []);
+  const showEmptyMessage = isEmpty && !isLoading && !isError;
+  const handleRetryClick = () => dispatch(loadRegions());
 
   return (
     <Container>
@@ -49,7 +52,7 @@ function RegionList(props: Props) {
           filteredList.map((region) => {
             const { id, name, areaId } = region;
             return (
-              <Region
+              <RegionItem
                 key={id}
                 id={id}
                 name={name}
@@ -66,6 +69,12 @@ function RegionList(props: Props) {
         </CenterWrapper>
       )}
       {showEmptyMessage && <CenterWrapper>No region found</CenterWrapper>}
+      {isError && (
+        <CenterWrapper>
+          There was a problem
+          <RetryButton onClick={handleRetryClick}>Retry</RetryButton>
+        </CenterWrapper>
+      )}
     </Container>
   );
 }
@@ -82,6 +91,11 @@ const CenterWrapper = styled.div`
   height: 100%;
   flex-direction: column;
   color: #0a1937;
+`;
+
+const RetryButton = styled(Button)`
+  min-width: 150px;
+  margin-top: 16px;
 `;
 
 const ListWrapper = styled.div`

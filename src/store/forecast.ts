@@ -70,7 +70,7 @@ export const forecastSlice = createSlice({
           minTemperature: Number(f.tMin),
           maxTemperature: Number(f.tMax),
           chanceOfPrecipitation: Number(f.precipitaProb),
-          date: new Date(f.forecastDate),
+          date: new Date(f.forecastDate).toISOString(),
         }));
 
         state.innerState = {
@@ -109,5 +109,8 @@ export const selectForecast = (state: RootState): Array<ForecastType> => {
 };
 export const selectIsLoading = (state: RootState): boolean =>
   state.forecast.innerState.kind === 'Loading';
+
+export const selectIsError = (state: RootState): boolean =>
+  state.forecast.innerState.kind === 'Failed';
 
 export default forecastSlice.reducer;
