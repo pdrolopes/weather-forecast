@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { RegionType } from '../types';
 import styled from 'styled-components';
-import { ReactComponent as RightChevron } from '../right_chevron.svg';
+import { ReactComponent as RightChevron } from '../icons/right_chevron.svg';
 
 type Props = RegionType & {
   onClick(): void;
