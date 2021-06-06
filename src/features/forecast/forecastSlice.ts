@@ -62,10 +62,12 @@ export const forecastSlice = createSlice({
         if (shouldIgnoreAction) {
           return;
         }
+
         const forecasts = action.payload.map(f => ({
           minTemperature: Number(f.tMin),
           maxTemperature: Number(f.tMax),
-          chanceOfPrecipitation: Number(f.precipitaProb)
+          chanceOfPrecipitation: Number(f.precipitaProb),
+          date: new Date(f.forecastDate)
         }))
 
         state.innerState = {
@@ -92,7 +94,6 @@ export const forecastSlice = createSlice({
       });
   },
 });
-
 
 export const selectForecast = (state: RootState): Array<ForecastType> => {
   const { innerState } = state.forecast;

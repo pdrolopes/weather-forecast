@@ -21,11 +21,12 @@ function ForecastList (props: Props) {
 
         {isLoading && <Loading />}
         {showContent && 
-        (
-            <>
-            <Subtitle>Daily forcast for {regionName}.</Subtitle>
-        { forecasts.map((forecast, index) => (<Forecast key={index} {...forecast}/>)) }
-        </>
+        (<>
+           <Subtitle>Region: {regionName}</Subtitle>
+           <ListWrapper>
+               {forecasts.map((forecast, index) => (<Forecast key={index} {...forecast}/>)) }
+            </ListWrapper>
+         </>
         )}
         </Container>);
 }
@@ -33,20 +34,30 @@ function ForecastList (props: Props) {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
-  width: 100%;
-`
-
+  min-width: 400px;
+`;
 
 const Title = styled.h2`
     margin-top: 0;
     font-size: 20px;
     color: #0a1937;
-`
+`;
+const ListWrapper  = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    & > * {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+`;
 
 const Subtitle = styled.h3`
     margin-top: 0;
     font-size: 16px;
     color: #0a1937;
-`
+`;
 
 export default ForecastList;
