@@ -1,24 +1,31 @@
-import React,  { useState, useMemo, ChangeEventHandler, HtmlHTMLAttributes } from 'react';
+import React,  { useState, useMemo, ChangeEventHandler, useEffect } from 'react';
 import Region from './Region';
 import Card from './Card';
 import Loading from './Loading';
 import { RegionType } from '../types';
 import styled from 'styled-components';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { loadRegions, selectIsLoading, selectRegions } from '../features/region/regionSlice';
 
 type Props = {
-    onRegionClick(id: number): void;
-    regions: Array<RegionType>;
-    isLoading?: boolean;
+    onRegionSelect(id: RegionType): void;
 };
 
 function RegionList (props: Props) {
-    const { regions, onRegionClick, isLoading = false } = props;
+    const { onRegionSelect } = props;
+
+    const dispatch = useAppDispatch();
+    const regions = useAppSelector(selectRegions);
+    const isLoading = useAppSelector(selectIsLoading);
 
     const [filter, setFilter] = useState("");
-    const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) => setFilter(event.target.value);
     const filteredList = useMemo(() => regions.filter(region => region.name.toLowerCase().includes(filter.toLowerCase()) || region.areaId.toLowerCase().includes(filter.toLowerCase())), [filter, regions]);
+
+    const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) => setFilter(event.target.value);
     const isEmpty = filteredList.length === 0;
     const showEmptyMessage = isEmpty && !isLoading;
+
+    useEffect(() => { dispatch(loadRegions()) }, []);
 
     return (
         <Container>
@@ -35,7 +42,7 @@ function RegionList (props: Props) {
                     id={id} 
                     name={name} 
                     areaId={areaId} 
-                    onClick={() => onRegionClick(id)}
+                    onClick={() => onRegionSelect(region)}
                     />)
                 })
             }</ListWrapper>
@@ -49,7 +56,6 @@ function RegionList (props: Props) {
 const Container = styled(Card)`
     display: flex;
     flex-direction: column;
-    height: 100%;
     min-width: 330px;
 `;
 

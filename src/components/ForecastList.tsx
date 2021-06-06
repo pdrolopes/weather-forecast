@@ -1,30 +1,41 @@
-import React from 'react';
-import { ForecastType } from '../types';
-import Forecast from './Forecast';
+import React, { useEffect } from 'react';
+import { RegionType } from '../types';
+import ForecastItem from './Forecast';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { loadForecast, selectForecast, selectIsLoading } from '../features/forecast/forecastSlice';
 import Card from './Card';
 import Loading from './Loading';
 import styled from 'styled-components';
 
 type Props = {
-    regionName: string;
-    forecasts: Array<ForecastType>;
-    isLoading?: boolean;
+    region?: RegionType;
 };
 
-function ForecastList (props: Props) {
-    const { forecasts, regionName, isLoading = false } = props;
+function Forecast(props: Props) {
+    const { region } = props;
 
-    const showContent = forecasts.length > 0 && !isLoading;
+    const dispatch = useAppDispatch();
+    const forecasts = useAppSelector(selectForecast);
+    const isLoadingForecasts = useAppSelector(selectIsLoading);
+
+    useEffect(() => {
+        region && dispatch(loadForecast(region.id))
+    }, [region]);
+    
+    const hasSelectedRegion = region !== undefined;
+    const showContent =  hasSelectedRegion && !isLoadingForecasts;
+    const regionLabel = region ? `${region.name} (${region.areaId})` : '';
+
 
     return (<Container>
         <Title>Forecast</Title>
 
-        {isLoading && <Loading />}
+        {isLoadingForecasts && <LoadingWrapper><Loading/></LoadingWrapper>}
         {showContent && 
         (<>
-           <Subtitle>Region: {regionName}</Subtitle>
+           <Subtitle>Region: {regionLabel}</Subtitle>
            <ListWrapper>
-               {forecasts.map((forecast, index) => (<Forecast key={index} {...forecast}/>)) }
+               {forecasts.map((forecast, index) => (<ForecastItem key={index} {...forecast}/>)) }
             </ListWrapper>
          </>
         )}
@@ -34,7 +45,17 @@ function ForecastList (props: Props) {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
+  height: 100%;
   min-width: 400px;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const Title = styled.h2`
@@ -47,6 +68,7 @@ const ListWrapper  = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
+    overflow: auto;
 
     & > * {
         margin-top: 8px;
@@ -60,4 +82,4 @@ const Subtitle = styled.h3`
     color: #0a1937;
 `;
 
-export default ForecastList;
+export default Forecast;

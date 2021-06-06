@@ -47,6 +47,7 @@ const Header = styled.div`
     border-radius: 8px 8px 0 0;
     border-bottom: 1px solid gray;
     padding: 4px;
+    padding-left: 8px;
 `;
 
 const Line = styled.div`
