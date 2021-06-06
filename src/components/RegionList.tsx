@@ -50,7 +50,7 @@ function RegionList(props: Props): ReactElement {
 
       <Divider />
 
-      <Transition state={transitionState}>
+      <StyledTransition state={transitionState}>
         <>
           <ListWrapper>
             {filteredList.map((region) => {
@@ -80,7 +80,7 @@ function RegionList(props: Props): ReactElement {
             </CenterWrapper>
           )}
         </>
-      </Transition>
+      </StyledTransition>
     </Container>
   );
 }
@@ -89,6 +89,13 @@ const Container = styled(Card)`
   display: flex;
   flex-direction: column;
   min-width: 330px;
+`;
+
+const StyledTransition = styled(Transition)`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
 `;
 
 const CenterWrapper = styled.div`

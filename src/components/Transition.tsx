@@ -2,10 +2,10 @@ import React, { ReactElement, ReactNode } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-type Props = { state: string; children: ReactNode };
+type Props = { className?: string; state: string; children: ReactNode };
 const transitionName = `fade`;
 function CustomTransition(props: Props): ReactElement {
-  const { state, children } = props;
+  const { state, children, className } = props;
 
   return (
     <SwitchTransition mode="out-in">
@@ -16,16 +16,13 @@ function CustomTransition(props: Props): ReactElement {
         classNames={transitionName}
         unmountOnExit
       >
-        <Container>{children}</Container>
+        <Container className={className}>{children}</Container>
       </CSSTransition>
     </SwitchTransition>
   );
 }
 
-const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+const Container = styled.div`
   &.${transitionName}-enter {
     opacity: 0;
   }
