@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
-import { fetchRegions } from '../../service/openData';
-import { RegionType } from '../../types';
+import { RootState } from '.';
+import { fetchRegions } from '../service/openData';
+import { RegionType } from '../types';
 
 type FailedState = {
   kind: 'Failed';

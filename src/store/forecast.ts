@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
-import { fetchForecast, DailyForecast as OpenDataForcast } from '../../service/openData';
-import { ForecastType } from '../../types';
+import { RootState } from '.';
+import { fetchForecast, DailyForecast as OpenDataForcast } from '../service/openData';
+import { ForecastType } from '../types';
 
 type IdleState = {
   kind: 'Idle';

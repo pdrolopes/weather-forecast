@@ -4,8 +4,8 @@ import Card from './Card';
 import Loading from './Loading';
 import { RegionType } from '../types';
 import styled from 'styled-components';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { loadRegions, selectIsLoading, selectRegions } from '../features/region/regionSlice';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { loadRegions, selectIsLoading, selectRegions } from '../store/region';
 
 type Props = {
   onRegionSelect(id: RegionType): void;

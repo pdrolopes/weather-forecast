@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, ReactElement } from 'react';
 import { RegionType } from '../types';
 import ForecastItem from './Forecast';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { loadForecast, selectForecast, selectIsLoading } from '../features/forecast/forecastSlice';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { loadForecast, selectForecast, selectIsLoading } from '../store/forecast';
 import Card from './Card';
 import Loading from './Loading';
 import styled from 'styled-components';
@@ -11,7 +11,7 @@ type Props = {
   region?: RegionType;
 };
 
-function Forecast(props: Props) {
+function Forecast(props: Props): ReactElement {
   const { region } = props;
 
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ function Forecast(props: Props) {
 
   useEffect(() => {
     region && dispatch(loadForecast(region.id));
-  }, [region]);
+  }, [region, dispatch]);
 
   const hasSelectedRegion = region !== undefined;
   const showContent = hasSelectedRegion && !isLoadingForecasts;
@@ -52,7 +52,7 @@ function Forecast(props: Props) {
 const Container = styled(Card)`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  overflow: auto;
   min-width: 400px;
 `;
 
@@ -75,7 +75,6 @@ const ListWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  overflow: auto;
 
   & > * {
     margin-top: 8px;
