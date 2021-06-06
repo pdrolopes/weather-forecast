@@ -1,28 +1,28 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { RegionType } from '../types';
 import styled from 'styled-components';
 import { ReactComponent as RightChevron } from '../right_chevron.svg';
 
 type Props = RegionType & {
-    onClick(): void;
+  onClick(): void;
 };
 
-function RegionComponent (props: Props) {
-    const { id, name, areaId, onClick } = props;
+function RegionComponent(props: Props): ReactElement {
+  const { name, areaId, onClick } = props;
 
-    return (
-        <Container onClick={onClick}>
-            <AreaCode>{areaId}</AreaCode>
-            <Title>{name}</Title>
-            <RightChevron/>
-        </Container>
-    );
+  return (
+    <Container onClick={onClick}>
+      <AreaCode>{areaId}</AreaCode>
+      <Title>{name}</Title>
+      <RightChevron />
+    </Container>
+  );
 }
 
 const Container = styled.div`
   display: flex;
-  justify-content:  space-between;
-  align-items:  center;
+  justify-content: space-between;
+  align-items: center;
   min-height: 40px;
   &:active {
     filter: brightness(95%);
@@ -35,8 +35,8 @@ const Container = styled.div`
 `;
 
 const AreaCode = styled.span`
-    font-weight: 500;
-    width: 40px;
+  font-weight: 500;
+  width: 40px;
 `;
 const Title = styled.span`
   display: block;

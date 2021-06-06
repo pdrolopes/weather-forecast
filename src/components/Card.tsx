@@ -5,6 +5,6 @@ const Card = styled.div`
   box-shadow: 0 2px 6px -2px gray;
   padding: 8px;
   border-radius: 4px;
-`
+`;
 
 export default Card;

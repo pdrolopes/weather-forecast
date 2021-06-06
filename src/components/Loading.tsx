@@ -6,16 +6,14 @@ const spin = keyframes`
 `;
 
 const Loading = styled.div`
-    border: 10px solid #e0e0e0;
-    border-top: 10px solid #97d5fe;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    min-height: 48px;
-    min-width: 48px;
-    animation: ${spin} 1s linear infinite;
+  border: 10px solid #e0e0e0;
+  border-top: 10px solid #97d5fe;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  min-width: 48px;
+  animation: ${spin} 1s linear infinite;
 `;
-
-  
 
 export default Loading;
