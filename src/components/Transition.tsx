@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 type Props = { className?: string; state: string; children: ReactNode };
 const transitionName = `fade`;
+const transitionTime = 100;
 function CustomTransition(props: Props): ReactElement {
   const { state, children, className } = props;
 
@@ -12,7 +13,7 @@ function CustomTransition(props: Props): ReactElement {
       <CSSTransition
         key={state}
         addEndListener={(node, done) => node.addEventListener('transitionend', done, false)}
-        timeout={100}
+        timeout={transitionTime}
         classNames={transitionName}
         unmountOnExit
       >
@@ -31,11 +32,11 @@ const Container = styled.div`
   }
   &.${transitionName}-enter-active {
     opacity: 1;
-    transition: opacity 100ms;
+    transition: opacity ${transitionTime}ms;
   }
   &.${transitionName}-exit-active {
     opacity: 0;
-    transition: opacity 100ms;
+    transition: opacity ${transitionTime}ms;
   }
 `;
 

@@ -3,6 +3,7 @@ import Button from './Button';
 import Card from './Card';
 import ForecastItem from './ForecastItem';
 import Loading from './Loading';
+import Transition from './Transition';
 import styled from 'styled-components';
 import { RegionType } from '../types';
 import { loadForecast, selectForecast, selectIsError, selectIsLoading } from '../store/forecast';
@@ -28,30 +29,35 @@ function Forecast(props: Props): ReactElement {
   const showContent = hasSelectedRegion && !isLoading && !isError;
   const regionLabel = region ? `${region.name} (${region.areaId})` : '';
   const handleRetryClick = () => region && dispatch(loadForecast(region.id));
+  const transitionState = `${isLoading}${showContent}${isError}${region?.id}`;
 
   return (
     <Container>
       <Title>Forecast</Title>
       {hasSelectedRegion && <Subtitle>Region: {regionLabel}</Subtitle>}
 
-      {isLoading && (
-        <LoadingWrapper>
-          <Loading />
-        </LoadingWrapper>
-      )}
-      {showContent && (
-        <ListWrapper>
-          {forecasts.map((forecast, index) => (
-            <ForecastItem key={index} {...forecast} />
-          ))}
-        </ListWrapper>
-      )}
-      {isError && (
-        <LoadingWrapper>
-          There was a problem
-          <RetryButton onClick={handleRetryClick}>Retry</RetryButton>
-        </LoadingWrapper>
-      )}
+      <StyledTransition state={transitionState}>
+        <>
+          {isLoading && (
+            <LoadingWrapper>
+              <Loading />
+            </LoadingWrapper>
+          )}
+          {showContent && (
+            <ListWrapper>
+              {forecasts.map((forecast, index) => (
+                <ForecastItem key={index} {...forecast} />
+              ))}
+            </ListWrapper>
+          )}
+          {isError && (
+            <LoadingWrapper>
+              There was a problem
+              <RetryButton onClick={handleRetryClick}>Retry</RetryButton>
+            </LoadingWrapper>
+          )}
+        </>
+      </StyledTransition>
     </Container>
   );
 }
@@ -69,6 +75,12 @@ const LoadingWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 100%;
+`;
+
+const StyledTransition = styled(Transition)`
+  display: flex;
+  flex-direction: column;
   height: 100%;
 `;
 
